@@ -13,6 +13,6 @@ export const statsList = [
     },
     {
         date: '2023-02-05',
-        qtys: [ 100, 0, 50, 0 ]
+        qtys: [ 100, 0, 50, 100000 ]
     }
 ]

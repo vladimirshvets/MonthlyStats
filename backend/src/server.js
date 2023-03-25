@@ -1,18 +1,30 @@
 import express from 'express';
+import { MongoClient } from 'mongodb';
 import { statsList as statsListRaw } from './temp-data';
 
+require("dotenv").config();
+
 let statsList = statsListRaw;
+
+const connectionString = process.env.MONGODB_CONNECTION;
+const client = new MongoClient(connectionString);
 
 const app = express();
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.json(statsList);
+app.get('/api/work-results', async (req, res) => {
+    await client.connect();
+    const db = client.db('MonthlyStats');
+    const workResults = await db.collection('workResults').find({}).toArray();
+    res.json(workResults);
 });
 
-app.get('/monthly-stats/:monthId', (req, res) => {
+app.get('/api/work-results/:monthId', async (req, res) => {
     const monthId = req.params.monthId;
-    const monthlyStats = statsList.find(s => s.date.startsWith(monthId));
+    await client.connect();
+    const db = client.db('MonthlyStats');
+    const monthlyStats = await db.collection('workResults').find({ date: { $regex: `^${monthId}` }}).toArray();
+    // { date: /^{2023-02}/ }
     res.json(monthlyStats);
 });
 
