@@ -6,7 +6,7 @@
         <thead>
             <tr>
                 <th class="text-left">Date</th>
-                <th class="text-left">Daily Time</th>
+                <th class="text-left">Working Time, h</th>
                 <th class="text-left">Qtys</th>
                 <th class="text-left">Norm of Time</th>
                 <th class="text-left">Percentage</th>
@@ -14,7 +14,7 @@
             </tr>
         </thead>
         <tbody>
-            <WorkResultsGridItem
+            <work-results-grid-item
                 v-for="item in items"
                 :key="item.id"
                 :item="item"
@@ -28,7 +28,9 @@
 import WorkResultsGridItem from './WorkResultsGridItem.vue'
 export default {
     name: 'WorkResultsGrid',
-    props: ['items'],
+    props: {
+        items: Array
+    },
     components: {
         WorkResultsGridItem
     }

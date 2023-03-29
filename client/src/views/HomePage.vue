@@ -1,22 +1,27 @@
 <template>
     <section>
         <div class="nav-wrap">
-            <router-link class="month-link" :to="{ name: 'MonthStats', params: { id: '2023-01'} }">Jan 2023</router-link>
-            <router-link class="month-link" :to="{ name: 'MonthStats', params: { id: '2023-02'} }">Feb 2023</router-link>
-            <router-link class="month-link" :to="{ name: 'MonthStats', params: { id: '2023-03'} }">Mar 2023</router-link>
-            <router-link class="month-link" :to="{ name: 'MonthStats', params: { id: '2023-04'} }">Apr 2023</router-link>
+            <v-card
+                color="#385F73"
+                theme="dark"
+                max-width="300px"
+                class="nav-today"
+            >
+                <v-card-title>TODAY</v-card-title>
+                <v-card-text>
+                    <router-link class="month-link" :to="{ name: 'MonthStats', params: { id: formatToday('YYYY-MM') } }">{{ formatToday('MMM YYYY') }}</router-link>
+                </v-card-text>
+            </v-card>
         </div>
-
-
         <div class="grid-wrap">
-            <work-results-grid :items="workResults" />
+            <work-results-grid :items="items" />
         </div>
-        
     </section>
 </template>
 
 <script>
 import axios from 'axios';
+import moment from 'moment';
 import WorkResultsGrid from '@/components/WorkResultsGrid.vue';
 export default {
     name: 'HomePage',
@@ -25,15 +30,33 @@ export default {
     },
     data() {
         return {
-            workResults: []
+            items: []
         }
     },
     mounted() {
         axios
             .get('/api/work-results')
             .then(response => {
-                this.workResults = response.data;
+                this.items = response.data;
             });
+    },
+    methods: {
+        formatToday(format) {
+            return moment(new Date()).format(format);
+        }
     }
 }
 </script>
+
+<style lang="less" scoped>
+.nav-wrap {
+    .nav-today {
+        margin: 1em;
+
+        a {
+            color: #fff;
+            font-size: 18px;
+        }
+    }
+}
+</style>
