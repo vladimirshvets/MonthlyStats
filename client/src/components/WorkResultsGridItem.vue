@@ -21,12 +21,15 @@
             </p>
         </td>
         <td>
-            <p v-for="(percent, index) in percentages" :key="index" class="item-val">
-                {{ percent.toFixed(2) }}%
+            <p v-for="(sectorTime, index) in item.sectorsTime" :key="index" class="item-val">
+                {{ sectorTime.toFixed(1) }}
             </p>
         </td>
         <td>
-            <span>{{ averagePercentage.toFixed(2) }}%</span>
+            <span>{{ item.totalTime.toFixed(1) }}</span>
+        </td>
+        <td>
+            <span class="item-result">{{ item.dailyPercentage.toFixed(1) }}%</span>
         </td>
     </tr>
 </template>
@@ -37,22 +40,6 @@ export default {
     name: 'WorkResultsGridItem',
     props: {
         item: Object
-    },
-    computed: {
-        percentages() {
-            let percentages = [];
-            for (let i = 0; i < 4; i++) {
-                percentages.push(
-                    this.item.qtys[i] / (this.item.dailyTime * 60 / this.item.normOfTime[i]) * 100
-                );
-            }
-            return percentages;
-        },
-        averagePercentage() {
-            return this.percentages.reduce(
-                (sum, item) => sum + Number(item), 0
-            ) / 4;
-        }
     },
     methods: {
         formattedDate(date) {
@@ -77,6 +64,10 @@ export default {
 
     .item-val {
         padding: 0 0.5em;
+    }
+
+    .item-result {
+        font-weight: 700;
     }
 }
 </style>

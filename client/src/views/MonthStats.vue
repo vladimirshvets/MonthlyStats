@@ -43,8 +43,8 @@
                         class="nav-today"
                     >
                         <v-card-text>
-                            <p>Days: {{ totalDays }}</p>
-                            <p>Average Percentage: {{ averagePercentage }}</p>
+                            <p>Days: <span class="result">{{ totalDays }}</span></p>
+                            <p>Average Percentage: <span class="result">{{ averagePercentage.toFixed(1) }}%</span></p>
                         </v-card-text>
                     </v-card>
                 </div>
@@ -95,8 +95,9 @@ export default {
         return {
             items: [],
             formData: {
+                date: moment(new Date()).format('YYYY-MM-DD'),
                 qtys: [],
-                normOfTime: []
+                normOfTime: [ 4.3, 2.2, 2.6, 3.1 ]
             },
             showForm: false,
         }
@@ -114,7 +115,11 @@ export default {
             return this.items.length;
         },
         averagePercentage() {
-            return 0;
+            if (this.totalDays == 0) {
+                return 0;
+            }
+            const dailyPercentages = this.items.map(x => x.dailyPercentage);
+            return this.calcSum(dailyPercentages) / this.totalDays;
         }
     },
     mounted() {
@@ -125,11 +130,32 @@ export default {
         next();
     },
     methods: {
-        getItems(period) {
-            axios
+        calcSum(values) {
+            return values.reduce(
+                (sum, item) => sum + Number(item), 0
+            );
+        },
+        calcStats() {
+            this.items.forEach((item) => {
+                item.sectorsTime = [];
+                for (let i = 0; i < 4; i++) {
+                    item.sectorsTime.push(
+                        item.qtys[i] * item.normOfTime[i]
+                    );
+                }
+                item.totalTime = this.calcSum(item.sectorsTime);
+                item.dailyPercentage = item.totalTime / this.calcWorkingMins(item.dailyTime) * 100;
+            });
+        },
+        calcWorkingMins(hours) {
+            return hours * 60;
+        },
+        async getItems(period) {
+            await axios
                 .get(`/api/work-results/${period}`)
                 .then(response => {
                     this.items = response.data;
+                    this.calcStats();
                 });
         },
         async save(payload) {
@@ -190,7 +216,11 @@ export default {
         triggerForm(state) {
             this.showForm = state;
             if (!state) {
-                this.setFormData({ qtys: [], normOfTime: [] });
+                this.setFormData({
+                    date: moment(new Date()).format('YYYY-MM-DD'),
+                    qtys: [],
+                    normOfTime: [ 4.3, 2.2, 2.6, 3.1 ]
+                });
             }
         }
     }
@@ -200,6 +230,12 @@ export default {
 <style lang="less" scoped>
 .nav-content {
     display: inline-block;
+}
+
+.summary-wrap {
+    .result {
+        font-weight: 700;
+    }
 }
 
 .actions-wrap {
