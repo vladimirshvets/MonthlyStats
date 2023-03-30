@@ -1,16 +1,21 @@
 import express from 'express';
 import { MongoClient } from 'mongodb';
-import { statsList as statsListRaw } from './temp-data';
+import path from 'path';
 
 require("dotenv").config();
-
-let statsList = statsListRaw;
 
 const connectionString = process.env.MONGODB_CONNECTION;
 const client = new MongoClient(connectionString);
 
 const app = express();
 app.use(express.json());
+
+app.use(express.static(
+    path.resolve(
+        __dirname, '../dist'),
+        { maxAge: '1y', etag: false }
+    )
+);
 
 app.get('/api/work-results', async (req, res) => {
     await client.connect();
@@ -61,7 +66,11 @@ app.delete('/api/daily-info/:date', async (req, res) => {
     res.json(result);
 });
 
-const port = 8000;
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
+
+const port = process.env.PORT || 8000;
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`)
 });

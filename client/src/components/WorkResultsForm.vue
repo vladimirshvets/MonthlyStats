@@ -18,12 +18,19 @@
                     <v-container>
                         <v-row>
                             <v-col cols="12" xs="6" sm="6" md="6">
-                                <v-text-field
-                                    name="date"
-                                    label="Date*"
+                                <datepicker
                                     v-model="formData.date"
+                                    model-type="yyyy-MM-dd"
+                                    format="dd.MM.yyyy"
+                                    :min-date="monthStart"
+                                    :max-date="monthEnd"
+                                    disable-month-year-select
+                                    :month-change-on-scroll="false"
+                                    :enable-time-picker="false"
+                                    placeholder="Date*"
+                                    auto-apply
                                     required
-                                ></v-text-field>
+                                ></datepicker>
                             </v-col>
                             <v-col cols="12" xs="6" sm="6" md="6">
                                 <v-text-field
@@ -36,7 +43,7 @@
                             <v-col cols="12" xs="3" sm="3" md="3">
                                 <v-text-field
                                     name="qty0"
-                                    label="Qty 1"
+                                    label="TAP BOK"
                                     v-model="qty0"
                                     required
                                 ></v-text-field>
@@ -44,51 +51,54 @@
                             <v-col cols="12" xs="3" sm="3" md="3">
                                 <v-text-field
                                     name="qty1"
-                                    label="Qty 2"
+                                    label="UBER BOK"
                                     v-model="qty1"
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="12" xs="3" sm="3" md="3">
                                 <v-text-field
                                     name="qty2"
-                                    label="Qty 3"
+                                    label="OP MALE"
                                     v-model="qty2"
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="12" xs="3" sm="3" md="3">
                                 <v-text-field
                                     name="qty3"
-                                    label="Qty 4"
+                                    label="OP DUJE"
                                     v-model="qty3"
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="12" xs="3" sm="3" md="3">
                                 <v-text-field
                                     name="normOfTime0"
-                                    label="Norm of time 1"
+                                    label="Norm of time (TAP BOK)"
                                     v-model="normOfTime0"
-                                    required
+                                    readonly
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="12" xs="3" sm="3" md="3">
                                 <v-text-field
                                     name="normOfTime1"
-                                    label="Norm of time 2"
+                                    label="Norm of time (UBER BOK)"
                                     v-model="normOfTime1"
+                                    readonly
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="12" xs="3" sm="3" md="3">
                                 <v-text-field
                                     name="normOfTime2"
-                                    label="Norm of time 3"
+                                    label="Norm of time (OP MALE)"
                                     v-model="normOfTime2"
+                                    readonly
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="12" xs="3" sm="3" md="3">
                                 <v-text-field
                                     name="normOfTime3"
-                                    label="Norm of time 4"
+                                    label="Norm of time (OP DUJE)"
                                     v-model="normOfTime3"
+                                    readonly
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -141,10 +151,13 @@
 </template>
 
 <script>
+import moment from 'moment';
+import Datepicker from '@vuepic/vue-datepicker';
 import DeleteConfirmationModal from '@/components/RemovalModal.vue';
 export default {
     name: 'WorkResultsForm',
     components: {
+        Datepicker,
         DeleteConfirmationModal
     },
     props: {
@@ -169,6 +182,12 @@ export default {
                 this.$emit('setData', value);
             }
         },
+        monthStart() {
+            return moment(new Date()).startOf('month').format('YYYY-MM-DD');
+        },
+        monthEnd() {
+            return moment(new Date()).endOf('month').format('YYYY-MM-DD');
+        },
         qty0: {
             get() { return this.formData.qtys[0]; },
             set(value) { this.formData.qtys[0] = value; }
@@ -178,7 +197,7 @@ export default {
             set(value) { this.formData.qtys[1] = value; }
         },
         qty2: {
-            get() { return this.formData.qtys?.[2]; },
+            get() { return this.formData.qtys[2]; },
             set(value) { this.formData.qtys[2] = value; }
         },
         qty3: {
@@ -215,16 +234,16 @@ export default {
                 date: this.formData.date,
                 dailyTime: this.formData.dailyTime,
                 qtys: [
-                    this.qty0,
-                    this.qty1,
-                    this.qty2,
-                    this.qty3,
+                    this.qty0 ?? 0,
+                    this.qty1 ?? 0,
+                    this.qty2 ?? 0,
+                    this.qty3 ?? 0,
                 ],
                 normOfTime: [
-                    this.normOfTime0,
-                    this.normOfTime1,
-                    this.normOfTime2,
-                    this.normOfTime3,
+                    this.normOfTime0 ?? 0,
+                    this.normOfTime1 ?? 0,
+                    this.normOfTime2 ?? 0,
+                    this.normOfTime3 ?? 0,
                 ]
             };
             if (this.formData.id) {
