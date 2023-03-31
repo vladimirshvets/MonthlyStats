@@ -35,7 +35,9 @@ http://localhost:8080
 
 #### 1. Build client app for production and copy output (dist folder) to backend
 ```
-cd ./client
+cd ./backend
+rm -rf dist
+cd ../client
 npm run build
 cp -r dist/ ../backend
 ```

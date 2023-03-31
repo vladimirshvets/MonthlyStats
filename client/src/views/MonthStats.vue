@@ -1,5 +1,6 @@
 <template>
-    <v-container>
+    <div v-if="isLoading"></div>
+    <v-container v-else>
         <v-row>
             <v-col cols="12" sm="7">
                 <div class="nav-wrap">
@@ -83,6 +84,7 @@
 <script>
 import moment from 'moment';
 import axios from 'axios';
+import { mapGetters, mapMutations } from 'vuex';
 import WorkResultsForm from '@/components/WorkResultsForm.vue';
 import WorkResultsGrid from '@/components/WorkResultsGrid.vue';
 import { calcStats, calcSum } from '@/stats-calculator';
@@ -100,7 +102,7 @@ export default {
                 qtys: [],
                 normOfTime: [ 4.3, 2.2, 2.6, 3.1 ]
             },
-            showForm: false,
+            showForm: false
         }
     },
     computed: {
@@ -121,7 +123,10 @@ export default {
             }
             const dailyPercentages = this.items.map(x => x.dailyPercentage);
             return this.calcSum(dailyPercentages) / this.totalDays;
-        }
+        },
+        ...mapGetters([
+            'isLoading'
+        ])
     },
     mounted() {
         this.getItems(this.$route.params.id);
@@ -134,59 +139,63 @@ export default {
         calcStats,
         calcSum,
         async getItems(period) {
+            this.setIsLoading(true);
             await axios
                 .get(`/api/work-results/${period}`)
                 .then(response => {
                     this.items = response.data;
                     this.calcStats(this.items);
+                })
+                .finally(() => {
+                    this.setIsLoading(false);
                 });
         },
         async save(payload) {
-            //this.setIsLoading(true);
+            this.setIsLoading(true);
             await axios
                 .post('/api/daily-info', payload)
                 .then(() => {
                     this.getItems(this.$route.params.id);
                     this.triggerForm(false);
-                    //this.snackbar("The record has been saved.");
+                    this.snackbar("The record has been saved.");
                 })
                 .catch(error => {
                     console.log(error);
                 })
                 .finally(() => {
-                    //this.setIsLoading(false);
+                    this.setIsLoading(false);
                 });
         },
         async update(id, payload) {
-            //this.setIsLoading(true);
+            this.setIsLoading(true);
             await axios
                 .put(`/api/daily-info/${id}`, payload)
                 .then(() => {
                     this.getItems(this.$route.params.id);
                     this.triggerForm(false);
-                    //this.snackbar("The record has been updated.")
+                    this.snackbar("The record has been updated.")
                 })
                 .catch(error => {
                     console.log(error);
                 })
                 .finally(() => {
-                    //this.setIsLoading(false);
+                    this.setIsLoading(false);
                 });
         },
         async remove(id) {
-            //this.setIsLoading(true);
+            this.setIsLoading(true);
             await axios
                 .delete(`/api/daily-info/${id}`)
                 .then(() => {
                     this.getItems(this.$route.params.id);
                     this.triggerForm(false);
-                    //this.snackbar("The record has been removed.")
+                    this.snackbar("The record has been removed.")
                 })
                 .catch(error => {
                     console.log(error.response.data);
                 })
                 .finally(() => {
-                    //this.setIsLoading(false);
+                    this.setIsLoading(false);
                 });
         },
         editItem(payload) {
@@ -205,7 +214,11 @@ export default {
                     normOfTime: [ 4.3, 2.2, 2.6, 3.1 ]
                 });
             }
-        }
+        },
+        ...mapMutations([
+            'setIsLoading',
+            'snackbar'
+        ])
     }
 }
 </script>
