@@ -1,3 +1,5 @@
+## HOW-TO: Setup Node.js Express server from scratch
+
 ####
 ```
 mkdir backend
@@ -16,17 +18,43 @@ npm install --save-dev @babel/core @babel/node @babel/preset-env @babel/cli @bab
 npm install @babel/runtime
 ```
 
-#### Create .babelrc file
+#### 3. Create .babelrc file
+```
+{
+    "presets": ["@babel/preset-env"],
+    "plugins": [
+        [ "@babel/plugin-transform-runtime", {
+            "regenerator": true
+        }]
+    ]
+}
+```
 
-#### 3. Start server
+#### 4. Start server
+```
 npx babel-node src/server.js
+```
 
-#### 4. Install nodemon to automatically restart the server on files change
+#### 5. Install nodemon to automatically restart the server on files change
+```
 npm install --save-dev nodemon
+```
+
+## Run dev server
 
 #### Start server using nodemon
+```
 npx nodemon --exec npx babel-node src/server.js
+```
 
-#### Or use alias from package.json
-npm run server-run
+#### or add alias to package.json
+```
+"scripts": {
+    "dev": "npx nodemon --exec npx babel-node src/server.js",
+}
+```
 
+#### and use it
+```
+npm run dev
+```

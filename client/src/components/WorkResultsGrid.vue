@@ -5,13 +5,13 @@
     >
         <thead>
             <tr>
-                <th class="text-left">Date</th>
-                <th class="text-left">Working Time, h</th>
-                <th class="text-left">Qtys</th>
-                <th class="text-left">Norm of Time, min</th>
-                <th class="text-left">Sector Time, min</th>
-                <th class="text-left">Total Time, min</th>
-                <th class="text-left">Daily Percentage</th>
+                <th class="text-center">Date</th>
+                <th class="text-center">Qtys</th>
+                <th class="text-center">Norm of Time, min</th>
+                <th class="text-center">Sector Time, min</th>
+                <th class="text-center">Total Time, min</th>
+                <th class="text-center">Working Time, min</th>
+                <th class="text-center">Daily Percentage</th>
             </tr>
         </thead>
         <tbody>

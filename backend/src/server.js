@@ -17,6 +17,10 @@ app.use(express.static(
     )
 );
 
+app.get('/api/health', async (req, res) => {
+    res.sendStatus(200);
+});
+
 app.get('/api/work-results', async (req, res) => {
     await client.connect();
     const db = client.db('MonthlyStats');
@@ -29,7 +33,6 @@ app.get('/api/work-results/:monthId', async (req, res) => {
     await client.connect();
     const db = client.db('MonthlyStats');
     const monthlyStats = await db.collection('workResults').find({ date: { $regex: `^${monthId}` }}).toArray();
-    // { date: /^{2023-02}/ }
     res.json(monthlyStats);
 });
 

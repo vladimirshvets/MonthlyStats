@@ -23,6 +23,7 @@
 import axios from 'axios';
 import moment from 'moment';
 import WorkResultsGrid from '@/components/WorkResultsGrid.vue';
+import { calcStats } from '@/stats-calculator';
 export default {
     name: 'HomePage',
     components: {
@@ -38,33 +39,14 @@ export default {
             .get('/api/work-results')
             .then(response => {
                 this.items = response.data;
-                this.calcStats();
+                this.calcStats(this.items);
             });
     },
     methods: {
+        calcStats,
         formatToday(format) {
             return moment(new Date()).format(format);
-        },
-        calcSum(values) {
-            return values.reduce(
-                (sum, item) => sum + Number(item), 0
-            );
-        },
-        calcStats() {
-            this.items.forEach((item) => {
-                item.sectorsTime = [];
-                for (let i = 0; i < 4; i++) {
-                    item.sectorsTime.push(
-                        item.qtys[i] * item.normOfTime[i]
-                    );
-                }
-                item.totalTime = this.calcSum(item.sectorsTime);
-                item.dailyPercentage = item.totalTime / this.calcWorkingMins(item.dailyTime) * 100;
-            });
-        },
-        calcWorkingMins(hours) {
-            return hours * 60;
-        },
+        }
     }
 }
 </script>

@@ -1,19 +1,21 @@
 <template>
     <tr
-        class="work-resluts-item list-item"
+        class="text-center work-resluts-item list-item"
         v-on:dblclick="editItem(item)"
     >
         <td>
             <p>{{ formattedDate(item.date) }}</p>
-            <p>{{ dayOfWeek(item.date) }}</p>
+            <p class="weekday">{{ dayOfWeek(item.date) }}</p>
         </td>
         <td>
-            <span>{{ item.dailyTime }}</span>
-        </td>
-        <td>
-            <p v-for="(qty, index) in item.qtys" :key="index" class="item-val">
-                {{ qty }}
-            </p>
+            <table>
+                <tbody>
+                    <tr v-for="(qty, index) in item.qtys" :key="index" class="item-val">
+                        <td class="sector-name">{{ sectorNames[index] }}</td>
+                        <td class="sector-qty">{{ qty }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </td>
         <td>
             <p v-for="(normOfTime, index) in item.normOfTime" :key="index" class="item-val">
@@ -29,6 +31,10 @@
             <span>{{ item.totalTime.toFixed(1) }}</span>
         </td>
         <td>
+            <span>{{ item.dailyTimeMins }}</span>
+            <span class="daily-time-hours"> ({{ item.dailyTime }} h)</span>
+        </td>
+        <td>
             <span class="item-result">{{ item.dailyPercentage.toFixed(1) }}%</span>
         </td>
     </tr>
@@ -40,6 +46,16 @@ export default {
     name: 'WorkResultsGridItem',
     props: {
         item: Object
+    },
+    data() {
+        return {
+            sectorNames: [
+                'Tap Bok',
+                'Uber Bok',
+                'Op Male',
+                'Op Duje',
+            ]
+        }
     },
     methods: {
         formattedDate(date) {
@@ -68,6 +84,22 @@ export default {
 
     .item-result {
         font-weight: 700;
+    }
+
+    .weekday {
+        color: #aaa;
+    }
+
+    .sector-name {
+        color: #ccc;
+        text-align: right;
+        padding-right: 5px;
+        white-space: nowrap;
+    }
+
+    .daily-time-hours {
+        color: #aaa;
+        white-space: nowrap;
     }
 }
 </style>
