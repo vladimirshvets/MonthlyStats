@@ -144,7 +144,7 @@
             :showModal="removalModal"
             @triggerModal="triggerRemovalModal"
             @remove="remove"
-            title="Delete Refueling"
+            title="Delete Daily Info"
             text="Are you sure you want to delete this record?"
         ></delete-confirmation-modal>
     </v-dialog>

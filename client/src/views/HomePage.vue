@@ -1,5 +1,6 @@
 <template>
-    <section>
+    <div v-if="isLoading"></div>
+    <section v-else>
         <div class="nav-wrap">
             <v-card
                 color="#385F73"
@@ -21,6 +22,7 @@
 
 <script>
 import axios from 'axios';
+import { mapGetters, mapMutations } from 'vuex';
 import moment from 'moment';
 import WorkResultsGrid from '@/components/WorkResultsGrid.vue';
 import { calcStats } from '@/stats-calculator';
@@ -34,19 +36,31 @@ export default {
             items: []
         }
     },
+    computed: {
+        ...mapGetters([
+            'isLoading'
+        ])
+    },
     async mounted() {
+        this.setIsLoading(true);
         await axios
             .get('/api/work-results')
             .then(response => {
                 this.items = response.data;
                 this.calcStats(this.items);
+            })
+            .finally(() => {
+                this.setIsLoading(false);
             });
     },
     methods: {
         calcStats,
         formatToday(format) {
             return moment(new Date()).format(format);
-        }
+        },
+        ...mapMutations([
+            'setIsLoading'
+        ])
     }
 }
 </script>

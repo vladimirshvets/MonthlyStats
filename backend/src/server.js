@@ -24,7 +24,10 @@ app.get('/api/health', async (req, res) => {
 app.get('/api/work-results', async (req, res) => {
     await client.connect();
     const db = client.db('MonthlyStats');
-    const workResults = await db.collection('workResults').find().sort({ date: -1 }).toArray();
+    const workResults = await db.collection('workResults')
+        .find()
+        .sort({ date: -1 })
+        .toArray();
     res.json(workResults);
 });
 
@@ -32,7 +35,10 @@ app.get('/api/work-results/:monthId', async (req, res) => {
     const monthId = req.params.monthId;
     await client.connect();
     const db = client.db('MonthlyStats');
-    const monthlyStats = await db.collection('workResults').find({ date: { $regex: `^${monthId}` }}).toArray();
+    const monthlyStats = await db.collection('workResults')
+        .find({ date: { $regex: `^${monthId}` }})
+        .sort({ date: -1 })
+        .toArray();
     res.json(monthlyStats);
 });
 
