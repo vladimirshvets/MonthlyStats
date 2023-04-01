@@ -1,6 +1,6 @@
 <template>
-    <div v-if="isLoading"></div>
-    <div v-else class="nav-wrap">
+    
+    <div class="nav-wrap">
         <v-row>
             <v-col cols="12" sm="6" class="nav-content-wrap">
                 <div class="links">
@@ -56,7 +56,8 @@
             @remove="remove"
         />
     </div>
-    <div class="grid-wrap">
+    <div v-if="isLoading"></div>
+    <div v-else class="grid-wrap">
         <work-results-grid
             :items="items"
             @editItem="editItem"
@@ -146,6 +147,9 @@ export default {
                 .then(response => {
                     this.items = response.data;
                     this.calcStats(this.items);
+                })
+                .catch(() => {
+                    this.items = [];
                 })
                 .finally(() => {
                     this.setIsLoading(false);
