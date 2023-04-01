@@ -76,7 +76,7 @@
             icon="mdi-plus"
             size="large"
             color="orange-darken-2"
-            @click="triggerForm(true)"
+            @click="addItem"
         ></v-btn>
     </div>
 </template>
@@ -95,10 +95,11 @@ export default {
         WorkResultsGrid
     },
     data() {
+        
         return {
             items: [],
             formData: {
-                date: moment(new Date()).format('YYYY-MM-DD'),
+                date: this.datepickerDate(),
                 qtys: [],
                 normOfTime: [ 4.3, 2.2, 2.6, 3.1 ]
             },
@@ -134,6 +135,7 @@ export default {
     beforeRouteUpdate(to, from, next) {
         this.getItems(to.params.id);
         next();
+        this.triggerForm(false);
     },
     methods: {
         calcStats,
@@ -198,6 +200,10 @@ export default {
                     this.setIsLoading(false);
                 });
         },
+        addItem() {
+            this.formData.date = this.datepickerDate();
+            this.triggerForm(true);
+        },
         editItem(payload) {
             this.setFormData(payload);
             this.triggerForm(true);
@@ -209,11 +215,17 @@ export default {
             this.showForm = state;
             if (!state) {
                 this.setFormData({
-                    date: moment(new Date()).format('YYYY-MM-DD'),
+                    date: this.datepickerDate(),
                     qtys: [],
                     normOfTime: [ 4.3, 2.2, 2.6, 3.1 ]
                 });
             }
+        },
+        datepickerDate() {
+            const date = moment(this.$route.params.id).month() == moment().month()
+                ? moment()
+                : moment(this.$route.params.id);
+            return date.format('YYYY-MM-DD');
         },
         ...mapMutations([
             'setIsLoading',

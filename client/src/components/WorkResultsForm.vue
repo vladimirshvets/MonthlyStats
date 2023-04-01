@@ -183,10 +183,10 @@ export default {
             }
         },
         monthStart() {
-            return moment(new Date()).startOf('month').format('YYYY-MM-DD');
+            return moment(this.formData.date).startOf('month').format('YYYY-MM-DD');
         },
         monthEnd() {
-            return moment(new Date()).endOf('month').format('YYYY-MM-DD');
+            return moment(this.formData.date).endOf('month').format('YYYY-MM-DD');
         },
         qty0: {
             get() { return this.formData.qtys[0]; },
