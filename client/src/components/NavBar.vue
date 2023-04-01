@@ -10,8 +10,6 @@
             </v-btn>
         </router-link>
         <v-app-bar-title>MONTHLY STATS</v-app-bar-title>
-
-        <v-spacer></v-spacer>
     </v-app-bar>
 </template>
 

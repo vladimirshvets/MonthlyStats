@@ -9,8 +9,8 @@
                 <th class="text-center">Qty</th>
                 <th class="text-center">Norm of time, min</th>
                 <th class="text-center">Sector time, min</th>
-                <th class="text-center">Actual time, min</th>
-                <th class="text-center">Estimated time</th>
+                <th class="text-center">Tracked time, min</th>
+                <th class="text-center">Estimated time, min</th>
                 <th class="text-center">Efficiency</th>
             </tr>
         </thead>

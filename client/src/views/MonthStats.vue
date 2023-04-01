@@ -36,7 +36,7 @@
                                 </v-col>
                                 <v-col cols="12" sm="6">
                                     <p>Estimated Time: <span class="result">{{ estimatedTime }} h</span></p>
-                                    <p>Actual Time: <span class="result">{{ actualTime.toFixed(1) }} min</span></p>
+                                    <p>Tracked Time: <span class="result">{{ actualTime.toFixed(1) }} min</span></p>
                                 </v-col>
                             </v-row>
                         </v-card-text>
