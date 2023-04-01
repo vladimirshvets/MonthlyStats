@@ -6,12 +6,12 @@
         <thead>
             <tr>
                 <th class="text-center">Date</th>
-                <th class="text-center">Qtys</th>
-                <th class="text-center">Norm of Time, min</th>
-                <th class="text-center">Sector Time, min</th>
-                <th class="text-center">Total Time, min</th>
-                <th class="text-center">Working Time, min</th>
-                <th class="text-center">Daily Percentage</th>
+                <th class="text-center">Qty</th>
+                <th class="text-center">Norm of time, min</th>
+                <th class="text-center">Sector time, min</th>
+                <th class="text-center">Actual time, min</th>
+                <th class="text-center">Estimated time</th>
+                <th class="text-center">Efficiency</th>
             </tr>
         </thead>
         <tbody>

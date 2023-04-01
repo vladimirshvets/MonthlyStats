@@ -1,58 +1,50 @@
 <template>
     <div v-if="isLoading"></div>
-    <v-container v-else>
+    <div v-else class="nav-wrap">
         <v-row>
-            <v-col cols="12" sm="7">
-                <div class="nav-wrap">
-                    <div class="nav-content">
-                        <v-btn
-                            class="ma-2"
-                            color="orange-darken-2"
-                            :to="{ name: 'MonthStats', params: { id: prevMonth } }"
-                        >
-                            <v-icon
-                                start
-                                icon="mdi-arrow-left"
-                            ></v-icon>
-                            {{ prevMonth }}
-                        </v-btn>
-                    </div>
-                    <div class="nav-content">
-                        <h2>{{ this.$route.params.id }}</h2>
-                    </div>
-                    <div class="nav-content">
-                        <v-btn
-                            class="ma-2"
-                            color="orange-darken-2"
-                            :to="{ name: 'MonthStats', params: { id: nextMonth } }"
-                        >
-                            {{ nextMonth }}
-                            <v-icon
-                                end
-                                icon="mdi-arrow-right"
-                            ></v-icon>
-                        </v-btn>
-                    </div>
+            <v-col cols="12" sm="6" class="nav-content-wrap">
+                <div class="links">
+                    <v-btn
+                        class="ma-2"
+                        color="orange-darken-2"
+                        :to="{ name: 'MonthStats', params: { id: prevMonth } }"
+                    >
+                        <v-icon icon="mdi-arrow-left"></v-icon>
+                    </v-btn>
+                    <h2 class="date">{{ this.$route.params.id }}</h2>
+                    <v-btn
+                        class="ma-2"
+                        color="orange-darken-2"
+                        :to="{ name: 'MonthStats', params: { id: nextMonth } }"
+                    >
+                        <v-icon icon="mdi-arrow-right"></v-icon>
+                    </v-btn>
                 </div>
             </v-col>
-            <v-col cols="12" sm="5">
+            <v-col cols="12" sm="6">
                 <div class="summary-wrap">
                     <v-card
                         color="#385F73"
                         theme="dark"
-                        max-width="300px"
                         class="nav-today"
                     >
                         <v-card-text>
-                            <p>Days: <span class="result">{{ totalDays }}</span></p>
-                            <p>Average Percentage: <span class="result">{{ averagePercentage.toFixed(1) }}%</span></p>
+                            <v-row>
+                                <v-col cols="12" sm="6">
+                                    <p>Days: <span class="result">{{ totalDays }}</span></p>
+                                    <p>Average Efficiency: <span class="result">{{ averagePercentage.toFixed(1) }}%</span></p>
+                                </v-col>
+                                <v-col cols="12" sm="6">
+                                    <p>Estimated Time: <span class="result">{{ estimatedTime }} h</span></p>
+                                    <p>Actual Time: <span class="result">{{ actualTime.toFixed(1) }} min</span></p>
+                                </v-col>
+                            </v-row>
                         </v-card-text>
                     </v-card>
                 </div>
             </v-col>
         </v-row>
-    </v-container>
-
+    </div>
     <div class="form-wrap">
         <work-results-form
             :showForm="showForm"
@@ -95,7 +87,6 @@ export default {
         WorkResultsGrid
     },
     data() {
-        
         return {
             items: [],
             formData: {
@@ -117,6 +108,14 @@ export default {
         },
         totalDays() {
             return this.items.length;
+        },
+        estimatedTime() {
+            const workingHours = this.items.map(x => x.dailyTime);
+            return this.calcSum(workingHours);
+        },
+        actualTime() {
+            const actualTimes = this.items.map(x => x.totalTime);
+            return this.calcSum(actualTimes);
         },
         averagePercentage() {
             if (this.totalDays == 0) {
@@ -236,8 +235,30 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.nav-content {
-    display: inline-block;
+.nav-wrap {
+    padding: 1.4em;
+
+    .nav-content-wrap {
+        text-align: center;
+        margin: auto;
+
+        .links {
+            display: inline-flex;
+
+            .date {
+                margin: auto;
+                padding: 0 0.5em;
+            }
+        }
+    }
+
+    .nav-content {
+        text-align: center;
+
+        &.current {
+            white-space: nowrap;
+        }
+    }
 }
 
 .summary-wrap {

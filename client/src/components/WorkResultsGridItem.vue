@@ -11,20 +11,20 @@
             <table>
                 <tbody>
                     <tr v-for="(qty, index) in item.qtys" :key="index" class="item-val">
-                        <td class="sector-name">{{ sectorNames[index] }}</td>
-                        <td class="sector-qty">{{ qty }}</td>
+                        <td v-if="qty > 0" class="sector-name">{{ sectorNames[index] }}</td>
+                        <td v-if="qty > 0" class="sector-qty">{{ qty }}</td>
                     </tr>
                 </tbody>
             </table>
         </td>
         <td>
             <p v-for="(normOfTime, index) in item.normOfTime" :key="index" class="item-val">
-                {{ normOfTime }}
+                <span v-if="item.qtys[index] > 0">{{ normOfTime }}</span>
             </p>
         </td>
         <td>
             <p v-for="(sectorTime, index) in item.sectorsTime" :key="index" class="item-val">
-                {{ sectorTime.toFixed(1) }}
+                <span v-if="item.qtys[index] > 0">{{ sectorTime.toFixed(1) }}</span>
             </p>
         </td>
         <td>
