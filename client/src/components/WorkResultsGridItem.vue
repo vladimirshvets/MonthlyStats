@@ -54,6 +54,7 @@ export default {
                 'Uber Bok',
                 'Op Male',
                 'Op Duje',
+                'Pak',
             ]
         }
     },

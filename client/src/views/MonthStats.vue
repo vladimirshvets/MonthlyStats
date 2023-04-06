@@ -93,7 +93,7 @@ export default {
             formData: {
                 date: this.datepickerDate(),
                 qtys: [],
-                normOfTime: [ 4.3, 2.2, 2.6, 3.1 ]
+                normOfTime: [ 4.3, 2.2, 2.6, 3.1, 4.5 ]
             },
             showForm: false
         }
@@ -220,7 +220,7 @@ export default {
                 this.setFormData({
                     date: this.datepickerDate(),
                     qtys: [],
-                    normOfTime: [ 4.3, 2.2, 2.6, 3.1 ]
+                    normOfTime: [ 4.3, 2.2, 2.6, 3.1, 4.5 ]
                 });
             }
         },

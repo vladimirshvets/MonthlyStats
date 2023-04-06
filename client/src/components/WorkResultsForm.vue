@@ -71,6 +71,13 @@
                             </v-col>
                             <v-col cols="12" xs="3" sm="3" md="3">
                                 <v-text-field
+                                    name="qty4"
+                                    label="PAK"
+                                    v-model="qty4"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" xs="3" sm="3" md="3">
+                                <v-text-field
                                     name="normOfTime0"
                                     label="Norm of time (TAP BOK)"
                                     v-model="normOfTime0"
@@ -98,6 +105,14 @@
                                     name="normOfTime3"
                                     label="Norm of time (OP DUJE)"
                                     v-model="normOfTime3"
+                                    readonly
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" xs="3" sm="3" md="3">
+                                <v-text-field
+                                    name="normOfTime4"
+                                    label="Norm of time (PAK)"
+                                    v-model="normOfTime4"
                                     readonly
                                 ></v-text-field>
                             </v-col>
@@ -204,6 +219,10 @@ export default {
             get() { return this.formData.qtys[3]; },
             set(value) { this.formData.qtys[3] = value; }
         },
+        qty4: {
+            get() { return this.formData.qtys[4]; },
+            set(value) { this.formData.qtys[4] = value; }
+        },
         normOfTime0: {
             get() { return this.formData.normOfTime?.[0] ?? 0; },
             set(value) { this.formData.normOfTime[0] = value; }
@@ -219,6 +238,10 @@ export default {
         normOfTime3: {
             get() { return this.formData.normOfTime?.[3] ?? 0; },
             set(value) { this.formData.normOfTime[3] = value; }
+        },
+        normOfTime4: {
+            get() { return this.formData.normOfTime?.[4] ?? 0; },
+            set(value) { this.formData.normOfTime[4] = value; }
         },
     },
     data() {
@@ -238,12 +261,14 @@ export default {
                     this.qty1 ?? 0,
                     this.qty2 ?? 0,
                     this.qty3 ?? 0,
+                    this.qty4 ?? 0,
                 ],
                 normOfTime: [
                     this.normOfTime0 ?? 0,
                     this.normOfTime1 ?? 0,
                     this.normOfTime2 ?? 0,
                     this.normOfTime3 ?? 0,
+                    this.normOfTime4 ?? 0,
                 ]
             };
             if (this.formData.id) {

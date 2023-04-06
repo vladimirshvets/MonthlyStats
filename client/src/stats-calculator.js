@@ -17,10 +17,9 @@ function calcStats(items) {
     items.forEach((item) => {
         item.dailyTimeMins = calcWorkingMins(item);
         item.sectorsTime = [];
-        for (let i = 0; i < 4; i++) {
-            item.sectorsTime.push(
-                item.qtys[i] * item.normOfTime[i]
-            );
+        for (let i = 0; i < 5; i++) {
+            let time = item.qtys[i] ? item.qtys[i] * item.normOfTime[i] : 0;
+            item.sectorsTime.push(time);
         }
         item.totalTime = calcSum(item.sectorsTime);
         item.dailyPercentage = item.totalTime / item.dailyTimeMins * 100;
