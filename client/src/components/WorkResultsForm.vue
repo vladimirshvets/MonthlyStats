@@ -113,7 +113,6 @@
                                     name="normOfTime4"
                                     label="Norm of time (PAK)"
                                     v-model="normOfTime4"
-                                    readonly
                                 ></v-text-field>
                             </v-col>
                         </v-row>
