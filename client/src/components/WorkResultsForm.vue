@@ -245,7 +245,6 @@ export default {
     },
     data() {
         return {
-            useExistingMileage: false,
             removalModal: false
         }
     },

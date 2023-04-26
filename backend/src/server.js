@@ -21,6 +21,32 @@ app.get('/api/health', async (req, res) => {
     res.sendStatus(200);
 });
 
+app.get('/api/month-info/:monthId', async (req, res) => {
+    const monthId = req.params.monthId;
+    await client.connect();
+    const db = client.db('MonthlyStats');
+    const monthInfo = await db.collection('monthInfo')
+        .findOne({ monthId: `${monthId}`});
+    res.json(monthInfo);
+});
+
+app.post('/api/month-info', async (req, res) => {
+    const value = req.body;
+    const query = { monthId: value.monthId };
+    const updateDoc = {
+        $set: {
+            monthId: value.monthId,
+            daysTotal: value.daysTotal,
+            desiredEfficiency: value.desiredEfficiency
+        },
+    };
+    const options = { upsert: true };
+    await client.connect();
+    const db = client.db('MonthlyStats');
+    const result = await db.collection('monthInfo').updateOne(query, updateDoc, options);
+    res.json(result);
+});
+
 app.get('/api/work-results', async (req, res) => {
     await client.connect();
     const db = client.db('MonthlyStats');

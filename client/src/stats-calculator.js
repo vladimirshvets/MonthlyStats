@@ -9,7 +9,9 @@ function calcSum(values) {
 function calcWorkingMins(item) {
     const hours = item.dailyTime;
     const dayOfWeek = moment(item.date).weekday();
-    const coffeeBreak = dayOfWeek == 6 ? 20 : 30;
+    const coffeeBreak = hours > 4
+        ? dayOfWeek == 6 ? 20 : 30
+        : 0;
     return hours * 60 - coffeeBreak;
 }
 
