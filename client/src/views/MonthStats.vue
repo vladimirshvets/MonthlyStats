@@ -107,8 +107,7 @@ export default {
             items: [],
             formData: {
                 date: this.datepickerDate(),
-                qtys: [],
-                normOfTime: [ 4.3, 2.2, 2.6, 3.1, 4.5 ]
+                items: []
             },
             monthInfoFormData: {
                 monthId: this.$route.params.id,
@@ -274,8 +273,7 @@ export default {
             if (!state) {
                 this.setFormData({
                     date: this.datepickerDate(),
-                    qtys: [],
-                    normOfTime: [ 4.3, 2.2, 2.6, 3.1, 4.5 ]
+                    items: []
                 });
             }
         },

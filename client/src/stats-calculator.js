@@ -19,10 +19,10 @@ function calcStats(items) {
     items.forEach((item) => {
         item.dailyTimeMins = calcWorkingMins(item);
         item.sectorsTime = [];
-        for (let i = 0; i < 5; i++) {
-            let time = item.qtys[i] ? item.qtys[i] * item.normOfTime[i] : 0;
+        item.items.forEach(function(wr) {
+            let time = wr.qty * wr.normOfTime;
             item.sectorsTime.push(time);
-        }
+        });
         item.totalTime = calcSum(item.sectorsTime);
         item.dailyPercentage = item.totalTime / item.dailyTimeMins * 100;
     });

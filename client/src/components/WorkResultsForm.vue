@@ -30,6 +30,7 @@
                                     placeholder="Date*"
                                     auto-apply
                                     required
+                                    :readonly="Boolean(formData.id)"
                                 ></datepicker>
                             </v-col>
                             <v-col cols="12" xs="6" sm="6" md="6">
@@ -40,79 +41,31 @@
                                     required
                                 ></v-text-field>
                             </v-col>
-                            <v-col cols="12" xs="3" sm="3" md="3">
+                        </v-row>
+                        <v-row>
+                            <v-col cols="12" xs="4" sm="4" md="4">
+                                <v-combobox
+                                    name="name0"
+                                    label="Name"
+                                    v-model="formData.name0"
+                                    :items="suggestedNames"
+                                    required
+                                ></v-combobox>
+                            </v-col>
+                            <v-col cols="12" xs="4" sm="4" md="4">
                                 <v-text-field
                                     name="qty0"
-                                    label="TAP BOK"
-                                    v-model="qty0"
+                                    label="Qty"
+                                    v-model="formData.qty0"
                                     required
                                 ></v-text-field>
                             </v-col>
-                            <v-col cols="12" xs="3" sm="3" md="3">
-                                <v-text-field
-                                    name="qty1"
-                                    label="UBER BOK"
-                                    v-model="qty1"
-                                ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" xs="3" sm="3" md="3">
-                                <v-text-field
-                                    name="qty2"
-                                    label="OP MALE"
-                                    v-model="qty2"
-                                ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" xs="3" sm="3" md="3">
-                                <v-text-field
-                                    name="qty3"
-                                    label="OP DUJE"
-                                    v-model="qty3"
-                                ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" xs="3" sm="3" md="3">
-                                <v-text-field
-                                    name="qty4"
-                                    label="PAK"
-                                    v-model="qty4"
-                                ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" xs="3" sm="3" md="3">
+                            <v-col cols="12" xs="4" sm="4" md="4">
                                 <v-text-field
                                     name="normOfTime0"
-                                    label="Norm of time (TAP BOK)"
-                                    v-model="normOfTime0"
-                                    readonly
-                                ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" xs="3" sm="3" md="3">
-                                <v-text-field
-                                    name="normOfTime1"
-                                    label="Norm of time (UBER BOK)"
-                                    v-model="normOfTime1"
-                                    readonly
-                                ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" xs="3" sm="3" md="3">
-                                <v-text-field
-                                    name="normOfTime2"
-                                    label="Norm of time (OP MALE)"
-                                    v-model="normOfTime2"
-                                    readonly
-                                ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" xs="3" sm="3" md="3">
-                                <v-text-field
-                                    name="normOfTime3"
-                                    label="Norm of time (OP DUJE)"
-                                    v-model="normOfTime3"
-                                    readonly
-                                ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" xs="3" sm="3" md="3">
-                                <v-text-field
-                                    name="normOfTime4"
-                                    label="Norm of time (PAK)"
-                                    v-model="normOfTime4"
+                                    label="Norm of time"
+                                    v-model="formData.normOfTime0"
+                                    required
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -201,72 +154,28 @@ export default {
         },
         monthEnd() {
             return moment(this.formData.date).endOf('month').format('YYYY-MM-DD');
-        },
-        qty0: {
-            get() { return this.formData.qtys[0]; },
-            set(value) { this.formData.qtys[0] = value; }
-        },
-        qty1: {
-            get() { return this.formData.qtys[1]; },
-            set(value) { this.formData.qtys[1] = value; }
-        },
-        qty2: {
-            get() { return this.formData.qtys[2]; },
-            set(value) { this.formData.qtys[2] = value; }
-        },
-        qty3: {
-            get() { return this.formData.qtys[3]; },
-            set(value) { this.formData.qtys[3] = value; }
-        },
-        qty4: {
-            get() { return this.formData.qtys[4]; },
-            set(value) { this.formData.qtys[4] = value; }
-        },
-        normOfTime0: {
-            get() { return this.formData.normOfTime?.[0] ?? 0; },
-            set(value) { this.formData.normOfTime[0] = value; }
-        },
-        normOfTime1: {
-            get() { return this.formData.normOfTime?.[1] ?? 0; },
-            set(value) { this.formData.normOfTime[1] = value; }
-        },
-        normOfTime2: {
-            get() { return this.formData.normOfTime?.[2] ?? 0; },
-            set(value) { this.formData.normOfTime[2] = value; }
-        },
-        normOfTime3: {
-            get() { return this.formData.normOfTime?.[3] ?? 0; },
-            set(value) { this.formData.normOfTime[3] = value; }
-        },
-        normOfTime4: {
-            get() { return this.formData.normOfTime?.[4] ?? 0; },
-            set(value) { this.formData.normOfTime[4] = value; }
-        },
+        }
     },
     data() {
         return {
-            removalModal: false
+            removalModal: false,
+            suggestedNames: [
+                "Bok Alen"
+            ]
         }
     },
     methods: {
         async submit() {
             const payload = {
-                id: this.formData.date,
+                id: this.formData.id ?? this.formData.date,
                 date: this.formData.date,
                 dailyTime: this.formData.dailyTime,
-                qtys: [
-                    this.qty0 ?? 0,
-                    this.qty1 ?? 0,
-                    this.qty2 ?? 0,
-                    this.qty3 ?? 0,
-                    this.qty4 ?? 0,
-                ],
-                normOfTime: [
-                    this.normOfTime0 ?? 0,
-                    this.normOfTime1 ?? 0,
-                    this.normOfTime2 ?? 0,
-                    this.normOfTime3 ?? 0,
-                    this.normOfTime4 ?? 0,
+                items: [
+                    {
+                        name: this.formData.name0,
+                        qty: this.formData.qty0,
+                        normOfTime: this.formData.normOfTime0
+                    }
                 ]
             };
             if (this.formData.id) {

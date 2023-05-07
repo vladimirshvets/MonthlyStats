@@ -83,8 +83,7 @@ app.put('/api/daily-info/:date', async (req, res) => {
         $set: {
             date: value.date,
             dailyTime: value.dailyTime,
-            qtys: value.qtys,
-            normOfTime: value.normOfTime
+            items: value.items
         },
     };
     await client.connect();
