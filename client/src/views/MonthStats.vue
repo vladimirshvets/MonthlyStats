@@ -273,7 +273,7 @@ export default {
             if (!state) {
                 this.setFormData({
                     date: this.datepickerDate(),
-                    items: []
+                    items: [{}]
                 });
             }
         },

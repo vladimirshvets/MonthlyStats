@@ -42,31 +42,49 @@
                                 ></v-text-field>
                             </v-col>
                         </v-row>
-                        <v-row>
+                        <v-row v-for="(wr, index) in workResultItems" :key="index">
                             <v-col cols="12" xs="4" sm="4" md="4">
                                 <v-combobox
-                                    name="name0"
+                                    :name="'name_' + index"
                                     label="Name"
-                                    v-model="formData.name0"
+                                    v-model="wr.name"
+                                    :value="wr.name"
                                     :items="suggestedNames"
                                     required
                                 ></v-combobox>
                             </v-col>
                             <v-col cols="12" xs="4" sm="4" md="4">
                                 <v-text-field
-                                    name="qty0"
+                                    :name="'qty_' + index"
                                     label="Qty"
-                                    v-model="formData.qty0"
+                                    v-model="wr.qty"
                                     required
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="12" xs="4" sm="4" md="4">
                                 <v-text-field
-                                    name="normOfTime0"
+                                    :name="'normOfTime_' + index"
                                     label="Norm of time"
-                                    v-model="formData.normOfTime0"
+                                    v-model="wr.normOfTime"
                                     required
                                 ></v-text-field>
+                            </v-col>
+                            <!-- <v-col cols="12" xs="1" sm="1" md="1">
+                                <v-icon
+                                    start
+                                    icon="mdi-close-circle-outline"
+                                ></v-icon>
+                            </v-col> -->
+                        </v-row>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-btn @click="addRow">
+                                    <v-icon
+                                        start
+                                        icon="mdi-plus"
+                                    ></v-icon>
+                                    <span>Add more</span>
+                                </v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -156,8 +174,14 @@ export default {
             return moment(this.formData.date).endOf('month').format('YYYY-MM-DD');
         }
     },
+    watch: {
+        formData: function(value) {
+            this.workResultItems = value.items;
+        }
+    },
     data() {
         return {
+            workResultItems: [ {} ],
             removalModal: false,
             suggestedNames: [
                 "Bok Alen"
@@ -166,17 +190,16 @@ export default {
     },
     methods: {
         async submit() {
+            const items = this.workResultItems.filter(wr =>
+                wr.name && wr.name.trim() != '' &&
+                wr.qty && wr.qty.trim() != '' &&
+                wr.normOfTime && wr.normOfTime.trim() != ''
+            );
             const payload = {
                 id: this.formData.id ?? this.formData.date,
                 date: this.formData.date,
                 dailyTime: this.formData.dailyTime,
-                items: [
-                    {
-                        name: this.formData.name0,
-                        qty: this.formData.qty0,
-                        normOfTime: this.formData.normOfTime0
-                    }
-                ]
+                items: items
             };
             if (this.formData.id) {
                 this.$emit('update', this.formData.id, payload);
@@ -192,6 +215,9 @@ export default {
         },
         triggerRemovalModal(state) {
             this.removalModal = state;
+        },
+        addRow() {
+            this.workResultItems.push({});
         }
     }
 }
